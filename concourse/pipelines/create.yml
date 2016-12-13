@@ -909,10 +909,10 @@ jobs:
 
                 STEMCELL_VERSION=$($VAL_FROM_YAML meta.stemcell.version paas-bootstrap/manifests/concourse-manifest/concourse-base.yml)
                 STEMCELL_NAME=$($VAL_FROM_YAML meta.stemcell.name paas-bootstrap/manifests/concourse-manifest/concourse-base.yml)
+                STEMCELL_SHA1=$($VAL_FROM_YAML meta.stemcell.sha1 paas-bootstrap/manifests/concourse-manifest/concourse-base.yml)
 
-                wget https://bosh.io/d/stemcells/${STEMCELL_NAME}?v=${STEMCELL_VERSION} -O stemcell.tgz
                 ./paas-bootstrap/concourse/scripts/bosh_login.sh {{bosh_fqdn_external}} bosh-secrets/bosh-secrets.yml
-                bosh upload stemcell stemcell.tgz --skip-if-exists
+                bosh upload stemcell "https://bosh.io/d/stemcells/${STEMCELL_NAME}?v=${STEMCELL_VERSION}" --skip-if-exists --sha1 "${STEMCELL_SHA1}"
 
       - task: deploy-concourse
         config:
