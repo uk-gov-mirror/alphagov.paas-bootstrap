@@ -13,8 +13,7 @@ RSpec.describe "manifest generation" do
   let(:fixtures) {
     merge_fixtures [
       "../fixtures/concourse-terraform-outputs.yml",
-      "../fixtures/generated-concourse-secrets.yml",
-      "../fixtures/predefined-concourse-secrets.yml",
+      "../fixtures/concourse-secrets.yml",
       "../fixtures/vpc-terraform-outputs.yml",
     ]
   }
