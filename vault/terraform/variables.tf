@@ -21,7 +21,7 @@ variable "extra-install" {
 //-------------------------------------------------------------------
 
 variable "ami" {
-    default = "ami-7eb2a716"
+    default = "ami-b17a12c6"
     description = "AMI for Vault instances"
 }
 
