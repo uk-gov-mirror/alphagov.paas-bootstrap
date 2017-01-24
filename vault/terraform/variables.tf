@@ -26,7 +26,7 @@ variable "ami" {
 }
 
 variable "availability-zones" {
-    default = "us-east-1a,us-east-1b"
+    default = "eu-west-1a,eu-west-1b"
     description = "Availability zones for launching the Vault instances"
 }
 
