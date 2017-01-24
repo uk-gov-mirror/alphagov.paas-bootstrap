@@ -18,7 +18,7 @@ resource "aws_autoscaling_group" "vault" {
     desired_capacity = "${var.nodes}"
     health_check_grace_period = 15
     health_check_type = "EC2"
-    vpc_zone_identifier = ["${split(",", var.subnets)}"]
+    vpc_zone_identifier = ["${aws_subnet.infra.*.id}"]
     load_balancers = ["${aws_elb.vault.id}"]
 
     tag {
@@ -34,6 +34,7 @@ resource "aws_launch_configuration" "vault" {
     key_name = "${var.key-name}"
     security_groups = ["${aws_security_group.vault.id}"]
     user_data = "${template_file.install.rendered}"
+    associate_public_ip_address = true
 }
 
 // Security group for Vault allows SSH and HTTP access (via "tcp" in
@@ -41,7 +42,7 @@ resource "aws_launch_configuration" "vault" {
 resource "aws_security_group" "vault" {
     name = "vault"
     description = "Vault servers"
-    vpc_id = "${var.vpc-id}"
+    vpc_id = "${aws_vpc.vault.id}"
 }
 
 resource "aws_security_group_rule" "vault-ssh" {
@@ -79,8 +80,8 @@ resource "aws_elb" "vault" {
     name = "vault"
     connection_draining = true
     connection_draining_timeout = 400
-    internal = true
-    subnets = ["${split(",", var.subnets)}"]
+    internal = false
+    subnets = ["${aws_subnet.infra.*.id}"]
     security_groups = ["${aws_security_group.elb.id}"]
 
     listener {
@@ -109,7 +110,7 @@ resource "aws_elb" "vault" {
 resource "aws_security_group" "elb" {
     name = "vault-elb"
     description = "Vault ELB"
-    vpc_id = "${var.vpc-id}"
+    vpc_id = "${aws_vpc.vault.id}"
 }
 
 resource "aws_security_group_rule" "vault-elb-http" {
