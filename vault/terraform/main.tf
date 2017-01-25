@@ -35,6 +35,7 @@ resource "aws_launch_configuration" "vault" {
     security_groups = ["${aws_security_group.vault.id}"]
     user_data = "${template_file.install.rendered}"
     associate_public_ip_address = true
+    iam_instance_profile = "${aws_iam_instance_profile.vault.id}"
 }
 
 // Security group for Vault allows SSH and HTTP access (via "tcp" in
