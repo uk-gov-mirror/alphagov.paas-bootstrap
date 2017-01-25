@@ -8,7 +8,8 @@ variable "download-url" {
 }
 
 variable "config" {
-    description = "Configuration (text) for Vault"
+   description = "Configuration (text) for Vault"
+   default     = ""
 }
 
 variable "extra-install" {

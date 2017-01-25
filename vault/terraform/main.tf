@@ -3,7 +3,19 @@ resource "template_file" "install" {
 
     vars {
         download_url  = "${var.download-url}"
-        config        = "${var.config}"
+        config        = <<EOF
+backend "s3" {
+  bucket     = "gds-paas-${var.env}-state"
+  access_key = ""
+  secret_key = ""
+  region     = "eu-west-1"
+}
+
+listener "tcp" {
+  address     = "127.0.0.1:8200"
+  tls_disable = 1
+}
+EOF
         extra-install = "${var.extra-install}"
     }
 }
