@@ -227,8 +227,8 @@ jobs:
           inputs:
           - name: paas-bootstrap
           params:
+            AWS_DEFAULT_REGION: "us-east-1"
             VAULT_ADDR: {{vault_addr}}
-            VAULT_TOKEN: {{vault_token}}
             DEPLOY_ENV: {{deploy_env}}
           run:
             path: sh
@@ -244,6 +244,7 @@ jobs:
               unzip vault.zip
               chmod 0755 vault
 
+              VAULT_ADDR="${VAULT_ADDR}" ./vault write auth/aws-ec2/login role=concourse-lite-vault pkcs7=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/pkcs7 | tr -d '\n')
               VAULT_ADDR="${VAULT_ADDR}" ./vault write "${DEPLOY_ENV}/git/ssh/key" "value=@generated_git_id_rsa"
               VAULT_ADDR="${VAULT_ADDR}" ./vault write "${DEPLOY_ENV}/git/ssh/key.pub" "value=@generated_git_id_rsa.pub"
 
