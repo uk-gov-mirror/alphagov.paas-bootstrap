@@ -32,6 +32,8 @@ datadog_app_key: ${DATADOG_APP_KEY:-}
 enable_collectd_addon: ${ENABLE_COLLECTD_ADDON}
 enable_syslog_addon: ${ENABLE_SYSLOG_ADDON}
 concourse_auth_duration: ${CONCOURSE_AUTH_DURATION:-5m}
+vault_addr: ${VAULT_ADDR:-}
+vault_token: ${VAULT_TOKEN:-}
 EOF
 }
 

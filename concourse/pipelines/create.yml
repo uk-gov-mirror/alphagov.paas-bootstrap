@@ -227,7 +227,9 @@ jobs:
           inputs:
           - name: paas-bootstrap
           params:
-            AWS_DEFAULT_REGION: {{aws_region}}
+            VAULT_ADDR: {{vault_addr}}
+            VAULT_TOKEN: {{vault_token}}
+            DEPLOY_ENV: {{deploy_env}}
           run:
             path: sh
             args:
@@ -236,8 +238,14 @@ jobs:
             - |
               apk add --update openssh
               ssh-keygen -t rsa -b 4096 -f generated_git_id_rsa -N ''
-              ./paas-bootstrap/concourse/scripts/s3init.sh {{state_bucket}} git_id_rsa generated_git_id_rsa
-              ./paas-bootstrap/concourse/scripts/s3init.sh {{state_bucket}} git_id_rsa.pub generated_git_id_rsa.pub
+
+              # Install Vault
+              curl -L "https://releases.hashicorp.com/vault/0.6.4/vault_0.6.4_linux_amd64.zip" > vault.zip
+              unzip vault.zip
+              chmod 0755 vault
+
+              VAULT_ADDR="${VAULT_ADDR}" ./vault write "${DEPLOY_ENV}/git/ssh/key" "value=@generated_git_id_rsa"
+              VAULT_ADDR="${VAULT_ADDR}" ./vault write "${DEPLOY_ENV}/git/ssh/key.pub" "value=@generated_git_id_rsa.pub"
 
       - task: deploy-vpc
         config:
