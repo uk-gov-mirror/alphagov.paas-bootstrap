@@ -96,6 +96,10 @@ build-concourse: ## Setup profiles for deploying a build concourse
 	$(eval export CONCOURSE_INSTANCE_PROFILE=concourse-build)
 	$(eval export ENABLE_COLLECTD_ADDON=false)
 	$(eval export ENABLE_SYSLOG_ADDON=false)
+	@if [ "$${DEPLOY_ENV}" = "master" ]; then \
+		echo "Refusing to deploy a build concourse with DEPLOY_ENV=master"; \
+		exit 1; \
+	fi
 	@true
 
 .PHONY: deployer-concourse
@@ -106,6 +110,10 @@ deployer-concourse: ## Setup profiles for deploying a paas-cf deployer concourse
 	$(eval export CONCOURSE_INSTANCE_PROFILE=deployer-concourse)
 	$(eval export ENABLE_COLLECTD_ADDON=true)
 	$(eval export ENABLE_SYSLOG_ADDON=true)
+	@if [ "$${DEPLOY_ENV}" = "build" ]; then \
+		echo "Refusing to deploy a deployer concourse with DEPLOY_ENV=build"; \
+		exit 1; \
+	fi
 	@true
 
 ## Actions
