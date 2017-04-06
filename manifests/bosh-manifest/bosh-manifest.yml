@@ -22,9 +22,9 @@ releases:
   url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=258
   sha1: 66f7ce02eda71d63fc13e86a6d49fa5a8398c906
 - name: bosh-aws-cpi
-  version: 62
-  url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=62
-  sha1: f36967927ceae09e5663a41fdda199edfe649dc6
+  version: 63
+  url: https://s3-eu-west-1.amazonaws.com/gds-paas-colin2017-state/bosh-aws-cpi-63.tgz
+  sha1: d8094dc44c8d9e2cb16d373c86fb69fe0cefdac1
 
 jobs:
 - name: bosh
