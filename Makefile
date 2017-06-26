@@ -70,7 +70,6 @@ dev: globals check-env-vars ## Set Environment to DEV
 	$(eval export AWS_ACCOUNT=dev)
 	$(eval export ENABLE_DATADOG ?= false)
 	$(eval export CONCOURSE_AUTH_DURATION=48h)
-	$(eval export SKIP_COMMIT_VERIFICATION=true)
 
 .PHONY: ci
 ci: globals check-env-vars ## Set Environment to CI
