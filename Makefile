@@ -19,6 +19,8 @@ test: spec lint_yaml lint_terraform lint_shellcheck lint_concourse lint_ruby ## 
 
 .PHONY: spec
 spec:
+	cd scripts &&\
+		BUNDLE_GEMFILE=../Gemfile bundle exec rspec
 	cd concourse/scripts &&\
 		go test
 	cd manifests/shared &&\
@@ -68,6 +70,7 @@ dev: globals check-env-vars ## Set Environment to DEV
 	$(eval export AWS_ACCOUNT=dev)
 	$(eval export ENABLE_DATADOG ?= false)
 	$(eval export CONCOURSE_AUTH_DURATION=48h)
+	$(eval export SKIP_COMMIT_VERIFICATION=true)
 
 .PHONY: ci
 ci: globals check-env-vars ## Set Environment to CI
@@ -163,3 +166,7 @@ upload-datadog-secrets: check-env-vars ## Decrypt and upload Datadog credentials
 	$(if ${DATADOG_PASSWORD_STORE_DIR},,$(error Must pass DATADOG_PASSWORD_STORE_DIR=<path_to_password_store>))
 	$(if $(wildcard ${DATADOG_PASSWORD_STORE_DIR}),,$(error Password store ${DATADOG_PASSWORD_STORE_DIR} does not exist))
 	@scripts/manage-datadog-secrets.sh upload
+
+merge_pr: ## Merge a PR. Must specify number in a PR=<number> form.
+	$(if ${PR},,$(error Must pass PR=<number>))
+	./scripts/merge_pr.rb --pr ${PR}
