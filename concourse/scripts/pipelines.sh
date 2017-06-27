@@ -24,6 +24,10 @@ bosh_manifest_state: bosh-manifest-state-${BOSH_AZ:-eu-west-1a}.json
 bosh_fqdn: bosh.${SYSTEM_DNS_ZONE_NAME}
 bosh_fqdn_external: bosh-external.${SYSTEM_DNS_ZONE_NAME}
 bosh_instance_profile: ${BOSH_INSTANCE_PROFILE}
+skip_commit_verification: ${SKIP_COMMIT_VERIFICATION}
+self_update_pipeline: ${SELF_UPDATE_PIPELINE:-true}
+target_concourse: ${TARGET_CONCOURSE}
+concourse_type: ${CONCOURSE_TYPE}
 concourse_instance_type: ${CONCOURSE_INSTANCE_TYPE}
 concourse_instance_profile: ${CONCOURSE_INSTANCE_PROFILE}
 enable_datadog: ${ENABLE_DATADOG}
@@ -55,7 +59,7 @@ generate_manifest_file() {
 export EXPOSE_PIPELINE=1
 for ACTION in create destroy; do
   bash "${SCRIPT_DIR}/deploy-pipeline.sh" \
-    "${ACTION}" \
+    "${ACTION}-bosh-concourse" \
     <(generate_manifest_file) \
     <(generate_vars_file)
 done

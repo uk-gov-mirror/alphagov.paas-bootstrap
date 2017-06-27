@@ -94,6 +94,7 @@ prod: globals check-env-vars ## Set Environment to Production
 .PHONY: build-concourse
 build-concourse: ## Setup profiles for deploying a build concourse
 	$(eval export BOSH_INSTANCE_PROFILE=bosh-director-build)
+	$(eval export CONCOURSE_TYPE=build-concourse)
 	$(eval export CONCOURSE_HOSTNAME=concourse)
 	$(eval export CONCOURSE_INSTANCE_TYPE=m4.large)
 	$(eval export CONCOURSE_INSTANCE_PROFILE=concourse-build)
@@ -104,6 +105,7 @@ build-concourse: ## Setup profiles for deploying a build concourse
 .PHONY: deployer-concourse
 deployer-concourse: ## Setup profiles for deploying a paas-cf deployer concourse
 	$(eval export BOSH_INSTANCE_PROFILE=bosh-director-cf)
+	$(eval export CONCOURSE_TYPE=deployer-concourse)
 	$(eval export CONCOURSE_HOSTNAME=deployer)
 	$(eval export CONCOURSE_INSTANCE_TYPE=m4.xlarge)
 	$(eval export CONCOURSE_INSTANCE_PROFILE=deployer-concourse)
@@ -119,6 +121,8 @@ fly-login: ## Do a fly login and sync
 		./concourse/scripts/fly_sync_and_login.sh
 
 pipelines:
+	$(eval export TARGET_CONCOURSE=${CONCOURSE_TYPE})
+	$(if ${TARGET_CONCOURSE},,$(error Must set CONCOURSE_TYPE=deployer-concourse|build-concourse. This can be done with the relevant make target.))
 	$$("./concourse/scripts/environment.sh") && \
                 ./concourse/scripts/pipelines.sh
 
@@ -129,15 +133,18 @@ bootstrap: ## Start bootstrap
 	$(if ${CONCOURSE_INSTANCE_TYPE},,$(error Must pass CONCOURSE_INSTANCE_TYPE=<name>))
 	$(if ${CONCOURSE_INSTANCE_PROFILE},,$(error Must pass CONCOURSE_INSTANCE_PROFILE=<name>))
 	$(eval export VAGRANT_SSH_KEY_NAME=$(VAGRANT_SSH_KEY_NAME))
+	$(eval export TARGET_CONCOURSE=bootstrap)
 	vagrant/deploy.sh
 
 .PHONY: bootstrap-destroy
 bootstrap-destroy: ## Destroy bootstrap
 	$(eval export VAGRANT_SSH_KEY_NAME=$(VAGRANT_SSH_KEY_NAME))
+	$(eval export TARGET_CONCOURSE=bootstrap)
 	./vagrant/destroy.sh
 
 .PHONY: showenv
 showenv: ## Display environment information
+	$(eval export TARGET_CONCOURSE=bootstrap)
 	@concourse/scripts/environment.sh
 	@echo export CONCOURSE_IP=$$(aws ec2 describe-instances \
 		--filters 'Name=tag:Name,Values=concourse/*' "Name=key-name,Values=${DEPLOY_ENV}_concourse_key_pair" \

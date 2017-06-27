@@ -84,10 +84,41 @@ resources:
       versioned_file: concourse-manifest.yml
 
 jobs:
+  - name: self-update-pipeline
+    serial: true
+    plan:
+      - get: paas-bootstrap
+      - task: upload-pipeline
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: governmentpaas/self-update-pipelines
+              tag: 895cf6752c8ec64af05a3a735186b90acd3db65a
+          inputs:
+            - name: paas-bootstrap
+          params:
+            DEPLOY_ENV: {{deploy_env}}
+            BRANCH: {{branch_name}}
+            AWS_ACCOUNT: {{aws_account}}
+            SKIP_COMMIT_VERIFICATION: {{skip_commit_verification}}
+            SELF_UPDATE_PIPELINE: {{self_update_pipeline}}
+            TARGET_CONCOURSE: {{target_concourse}}
+            CONCOURSE_TYPE: {{concourse_type}}
+            VAGRANT_IP: {{vagrant_ip}}
+          run:
+            path: ./paas-bootstrap/concourse/scripts/self-update-pipeline.sh
+      - put: pipeline-trigger
+        params: {bump: patch}
+
   - name: enable-bosh-access
     serial: true
     plan:
       - aggregate:
+        - get: pipeline-trigger
+          trigger: true
+          passed: ['self-update-pipeline']
         - get: paas-bootstrap
         - get: vpc-tfstate
         - get: bosh-tfstate

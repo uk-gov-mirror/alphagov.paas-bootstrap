@@ -32,7 +32,7 @@ Vagrant.configure(2) do |config|
     config.vm.provision "shell" do |s|
       s.privileged = true
       s.env = ENV.select { |key|
-        %w(CONCOURSE_ATC_PASSWORD CONCOURSE_ATC_USER CONCOURSE_DATABASE_NAME CONCOURSE_URL BRANCH DEPLOY_ENV).include? key
+        %w(CONCOURSE_ATC_PASSWORD CONCOURSE_ATC_USER CONCOURSE_DATABASE_NAME CONCOURSE_URL BRANCH DEPLOY_ENV TARGET_CONCOURSE).include? key
       }
       s.name = post_deploy_file
       s.path = post_deploy_file
