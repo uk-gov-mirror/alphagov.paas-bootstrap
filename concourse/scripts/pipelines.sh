@@ -53,13 +53,43 @@ generate_vars_file > /dev/null # Check for missing vars
 
 generate_manifest_file() {
   sed -e "s/{{gpg_ids}}/${gpg_ids}/" \
-      < "${SCRIPT_DIR}/../pipelines/${ACTION}.yml"
+      < "${SCRIPT_DIR}/../pipelines/${pipeline_name}.yml"
+}
+
+upload_pipeline() {
+  bash "${SCRIPT_DIR}/deploy-pipeline.sh" \
+    "${pipeline_name}" \
+    <(generate_manifest_file) \
+    <(generate_vars_file)
+}
+
+remove_pipeline() {
+  yes y | ${FLY_CMD} -t "${FLY_TARGET}" destroy-pipeline --pipeline "${pipeline_name}" || true
+}
+
+update_pipeline() {
+  pipeline_name="$1"
+
+  case "$pipeline_name" in
+    create-bosh-concourse)
+      upload_pipeline
+    ;;
+    destroy-bosh-concourse)
+      if [ "${ENABLE_DESTROY:-}" == 'true' ]; then
+        upload_pipeline
+      else
+        remove_pipeline
+      fi
+    ;;
+    *)
+      echo "ERROR: Unknown pipeline definition: $pipeline_name"
+      exit 1
+    ;;
+  esac
 }
 
 export EXPOSE_PIPELINE=1
-for ACTION in create destroy; do
-  bash "${SCRIPT_DIR}/deploy-pipeline.sh" \
-    "${ACTION}-bosh-concourse" \
-    <(generate_manifest_file) \
-    <(generate_vars_file)
+pipelines_to_update="create-bosh-concourse destroy-bosh-concourse"
+for p in $pipelines_to_update; do
+  update_pipeline "$p"
 done
