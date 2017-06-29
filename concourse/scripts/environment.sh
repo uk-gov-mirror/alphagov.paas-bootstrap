@@ -17,6 +17,8 @@ fi
 
 AWS_ACCOUNT=${AWS_ACCOUNT:-dev}
 
+BOSH_FQDN="bosh.${SYSTEM_DNS_ZONE_NAME}"
+BOSH_FQDN_EXTERNAL="bosh-external.${SYSTEM_DNS_ZONE_NAME}"
 CONCOURSE_ATC_USER=${CONCOURSE_ATC_USER:-admin}
 case "${TARGET_CONCOURSE}" in
   bootstrap)
@@ -28,6 +30,7 @@ case "${TARGET_CONCOURSE}" in
         user_id=$(aws sts get-caller-identity | awk '$1 ~ /UserId/ {print $2}')
         CONCOURSE_ATC_PASSWORD=$(hashed_password "${user_id}")
     fi
+    BOSH_LOGIN_HOST=${BOSH_FQDN_EXTERNAL}
     ;;
   deployer-concourse|build-concourse)
     if [ "$TARGET_CONCOURSE" == 'deployer-concourse' ]; then
@@ -41,6 +44,7 @@ case "${TARGET_CONCOURSE}" in
     if [ -z "${CONCOURSE_ATC_PASSWORD:-}" ]; then
       CONCOURSE_ATC_PASSWORD=$(concourse/scripts/val_from_yaml.rb secrets.concourse_atc_password <(aws s3 cp "s3://gds-paas-${DEPLOY_ENV}-state/concourse-secrets.yml" -))
     fi
+    BOSH_LOGIN_HOST=${BOSH_FQDN}
     ;;
   *)
     echo "Unrecognized TARGET_CONCOURSE: '${TARGET_CONCOURSE}'. Must be (bootstrap|deployer-concourse|build-concourse)" 1>&2

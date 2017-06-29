@@ -871,13 +871,15 @@ jobs:
             - name: paas-bootstrap
             - name: bosh-secrets
             - name: runtime-config
+          params:
+            BOSH_LOGIN_HOST: {{bosh_login_host}}
           run:
             path: sh
             args:
               - -e
               - -c
               - |
-                ./paas-bootstrap/concourse/scripts/bosh_login.sh {{bosh_fqdn_external}} bosh-secrets/bosh-secrets.yml
+                ./paas-bootstrap/concourse/scripts/bosh_login.sh "${BOSH_LOGIN_HOST}" bosh-secrets/bosh-secrets.yml
                 bosh update runtime-config runtime-config/runtime-config.yml
                 ./paas-bootstrap/concourse/scripts/bosh_upload_releases_from_manifest.rb runtime-config/runtime-config.yml
 
@@ -1162,6 +1164,8 @@ jobs:
           inputs:
             - name: bosh-secrets
             - name: paas-bootstrap
+          params:
+            BOSH_LOGIN_HOST: {{bosh_login_host}}
           run:
             path: sh
             args:
@@ -1174,7 +1178,7 @@ jobs:
                 STEMCELL_NAME=$($VAL_FROM_YAML meta.stemcell.name paas-bootstrap/manifests/concourse-manifest/concourse-base.yml)
 
                 wget https://bosh.io/d/stemcells/${STEMCELL_NAME}?v=${STEMCELL_VERSION} -O stemcell.tgz
-                ./paas-bootstrap/concourse/scripts/bosh_login.sh {{bosh_fqdn_external}} bosh-secrets/bosh-secrets.yml
+                ./paas-bootstrap/concourse/scripts/bosh_login.sh "${BOSH_LOGIN_HOST}" bosh-secrets/bosh-secrets.yml
                 bosh upload stemcell stemcell.tgz --skip-if-exists
 
       - task: deploy-concourse
@@ -1191,13 +1195,15 @@ jobs:
           - name: paas-bootstrap
           outputs:
           - name: updated-concourse-manifest
+          params:
+            BOSH_LOGIN_HOST: {{bosh_login_host}}
           run:
             path: sh
             args:
             - -e
             - -c
             - |
-              ./paas-bootstrap/concourse/scripts/bosh_login.sh {{bosh_fqdn_external}} bosh-secrets/bosh-secrets.yml
+              ./paas-bootstrap/concourse/scripts/bosh_login.sh "${BOSH_LOGIN_HOST}" bosh-secrets/bosh-secrets.yml
               sed -e "s/^director_uuid:.*/director_uuid: $(bosh status --uuid)/" < concourse-manifest/concourse-manifest.yml > updated-concourse-manifest/concourse-manifest.yml
               bosh deployment updated-concourse-manifest/concourse-manifest.yml
               bosh -n deploy
@@ -1262,13 +1268,15 @@ jobs:
           - name: paas-bootstrap
           - name: concourse-manifest
           - name: bosh-secrets
+          params:
+            BOSH_LOGIN_HOST: {{bosh_login_host}}
           run:
             path: sh
             args:
             - -e
             - -c
             - |
-              ./paas-bootstrap/concourse/scripts/bosh_login.sh {{bosh_fqdn_external}} bosh-secrets/bosh-secrets.yml
+              ./paas-bootstrap/concourse/scripts/bosh_login.sh "${BOSH_LOGIN_HOST}" bosh-secrets/bosh-secrets.yml
               mkdir -p updated-concourse-manifest
               sed -e "s/^director_uuid:.*/director_uuid: $(bosh status --uuid)/" < concourse-manifest/concourse-manifest.yml > updated-concourse-manifest/concourse-manifest.yml
               bosh deployment updated-concourse-manifest/concourse-manifest.yml

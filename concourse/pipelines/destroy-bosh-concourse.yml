@@ -215,13 +215,15 @@ jobs:
           - name: paas-bootstrap
           - name: bosh-secrets
           - name: concourse-manifest
+          params:
+            BOSH_LOGIN_HOST: {{bosh_login_host}}
           run:
             path: sh
             args:
             - -e
             - -c
             - |
-              ./paas-bootstrap/concourse/scripts/bosh_login.sh {{bosh_fqdn_external}} bosh-secrets/bosh-secrets.yml
+              ./paas-bootstrap/concourse/scripts/bosh_login.sh "${BOSH_LOGIN_HOST}" bosh-secrets/bosh-secrets.yml
               DEPLOYMENT_NAME=$(./paas-bootstrap/concourse/scripts/val_from_yaml.rb name concourse-manifest/concourse-manifest.yml)
               bosh -n delete deployment --force "$DEPLOYMENT_NAME"
 
@@ -328,13 +330,15 @@ jobs:
           inputs:
             - name: paas-bootstrap
             - name: bosh-secrets
+          params:
+            BOSH_LOGIN_HOST: {{bosh_login_host}}
           run:
             path: sh
             args:
               - -e
               - -c
               - |
-                ./paas-bootstrap/concourse/scripts/bosh_login.sh {{bosh_fqdn_external}} bosh-secrets/bosh-secrets.yml
+                ./paas-bootstrap/concourse/scripts/bosh_login.sh "${BOSH_LOGIN_HOST}" bosh-secrets/bosh-secrets.yml
                 ./paas-bootstrap/concourse/scripts/bosh_pre_destroy.rb
 
       - task: cleanup-orphaned-disks
@@ -348,13 +352,15 @@ jobs:
           inputs:
             - name: paas-bootstrap
             - name: bosh-secrets
+          params:
+            BOSH_LOGIN_HOST: {{bosh_login_host}}
           run:
             path: sh
             args:
               - -e
               - -c
               - |
-                ./paas-bootstrap/concourse/scripts/bosh_login.sh {{bosh_fqdn_external}} bosh-secrets/bosh-secrets.yml
+                ./paas-bootstrap/concourse/scripts/bosh_login.sh "${BOSH_LOGIN_HOST}" bosh-secrets/bosh-secrets.yml
                 bosh cleanup --all
 
       - task: destroy-bosh-instance

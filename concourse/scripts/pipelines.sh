@@ -21,8 +21,9 @@ concourse_hostname: ${CONCOURSE_HOSTNAME}
 system_dns_zone_name: ${SYSTEM_DNS_ZONE_NAME}
 bosh_az: ${BOSH_AZ:-eu-west-1a}
 bosh_manifest_state: bosh-manifest-state-${BOSH_AZ:-eu-west-1a}.json
-bosh_fqdn: bosh.${SYSTEM_DNS_ZONE_NAME}
-bosh_fqdn_external: bosh-external.${SYSTEM_DNS_ZONE_NAME}
+bosh_fqdn: ${BOSH_FQDN}
+bosh_fqdn_external: ${BOSH_FQDN_EXTERNAL}
+bosh_login_host: ${BOSH_LOGIN_HOST}
 bosh_instance_profile: ${BOSH_INSTANCE_PROFILE}
 skip_commit_verification: ${SKIP_COMMIT_VERIFICATION}
 self_update_pipeline: ${SELF_UPDATE_PIPELINE:-true}
