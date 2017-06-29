@@ -114,7 +114,7 @@ You will need a working [Concourse Lite](#concourse-lite).
 
 ### Deploy
 
-Run the `create-bosh-concourse` pipeline from your *Concourse Lite*.
+Run the `create-bosh-concourse` pipeline from your *Concourse Lite*. The pipeline will upload itself to the Concourse it has created, which means future runs of the pipeline can be done from there. In theory, we should only need the *Concourse Lite* for the initial bootstrapping.
 
 When complete, you can access the new Concourse from your browser. The URL
 and credentials can be found from:
