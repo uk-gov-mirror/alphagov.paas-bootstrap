@@ -76,7 +76,7 @@ update_pipeline() {
       upload_pipeline
     ;;
     destroy-bosh-concourse)
-      if [ "${ENABLE_DESTROY:-}" == 'true' ]; then
+      if [ "${ENABLE_DESTROY:-}" == 'true' ] && [ "${TARGET_CONCOURSE}" == 'bootstrap' ]; then
         upload_pipeline
       else
         remove_pipeline
