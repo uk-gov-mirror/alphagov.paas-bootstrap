@@ -25,13 +25,13 @@ resource_types:
   type: docker-image
   source:
     repository: governmentpaas/s3-resource
-    tag: 9e7cf1dd32699c091e22e46b349e050443d9ac1a
+    tag: 150512756-upgrade-concourse
 
 - name: semver-iam
   type: docker-image
   source:
     repository: governmentpaas/semver-resource
-    tag: dc33fee5c9061263e83159a893340f46728d93b5
+    tag: 150512756-upgrade-concourse
 
 resources:
   - name: paas-bootstrap
