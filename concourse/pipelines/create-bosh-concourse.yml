@@ -967,6 +967,29 @@ jobs:
               ../paas-bootstrap/concourse/scripts/s3init.sh {{state_bucket}} concourse_id_rsa generated_concourse_id_rsa
               ../paas-bootstrap/concourse/scripts/s3init.sh {{state_bucket}} concourse_id_rsa.pub generated_concourse_id_rsa.pub
 
+      - task: remove-codecommit
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: governmentpaas/awscli
+              tag: 895cf6752c8ec64af05a3a735186b90acd3db65a
+          inputs:
+            - name: paas-bootstrap
+          params:
+            CONCOURSE_HOSTNAME: {{concourse_hostname}}
+            SYSTEM_DNS_ZONE_NAME: {{system_dns_zone_name}}
+            AWS_DEFAULT_REGION: us-east-1
+            DEPLOY_ENV: {{deploy_env}}
+          run:
+            path: sh
+            args:
+            - -e
+            - -c
+            - |
+              aws codecommit delete-repository --repository-name concourse-pool-${DEPLOY_ENV}
+
       - task: terraform-apply
         config:
           platform: linux
