@@ -1,0 +1,29 @@
+---
+prod: |
+      --github-auth-user alext \
+      --github-auth-user dcarley \
+      --github-auth-user bleach \
+      --github-auth-user henrytk \
+      --github-auth-user paroxp \
+      --github-auth-user timmow \
+      --github-auth-user LeePorte \
+staging: |
+      --github-auth-user alext \
+      --github-auth-user dcarley \
+      --github-auth-user bleach \
+      --github-auth-user henrytk \
+      --github-auth-user paroxp \
+      --github-auth-user timmow \
+      --github-auth-user LeePorte \
+ci: |
+      --github-auth-user alext \
+      --github-auth-user dcarley \
+      --github-auth-user bleach \
+      --github-auth-user henrytk \
+      --github-auth-user paroxp \
+      --github-auth-user timmow \
+      --github-auth-user LeePorte \
+      --github-auth-user chrisfarms \
+      --github-auth-user 46bit \
+      --github-auth-user samcrang \
+      --github-auth-user bandesz \
