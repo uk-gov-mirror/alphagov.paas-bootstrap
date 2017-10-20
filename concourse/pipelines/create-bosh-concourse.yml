@@ -38,7 +38,7 @@ resources:
     type: git
     source:
       uri: https://github.com/alphagov/paas-bootstrap.git
-      branch: ((branch_name))
+      branch: wip/concourse-github
       commit_verification_key_ids: ((gpg_ids))
 
   - name: bucket-terraform-state
@@ -1246,7 +1246,7 @@ jobs:
                 GITHUB_CLIENT_SECRET=$(./paas-bootstrap/concourse/scripts/val_from_yaml.rb secrets.github_client_secret github-oauth-secrets/github-oauth-secrets.yml)
                 PROD=$(./paas-bootstrap/concourse/scripts/val_from_yaml.rb prod ./paas-bootstrap/concourse/users/users.yml)
                 CI=$(./paas-bootstrap/concourse/scripts/val_from_yaml.rb ci ./paas-bootstrap/concourse/users/users.yml)
-                if [ "${FLY_TEAM}" != "dev" ] && [ "${FLY_TEAM}" != "ci" ]; then
+                if [ "${FLY_TEAM}" = "dev" ]; then
                   ./paas-bootstrap/concourse/scripts/fly_sync_and_login.sh
                   ${FLY_CMD} -t ${FLY_TARGET} set-team -n ${FLY_TEAM} \
                     --github-auth-client-id ${GITHUB_CLIENT_ID} \
