@@ -699,7 +699,7 @@ jobs:
                 mkdir out
                 tar -xvzf bosh-CA/bosh-CA.tar.gz -C out
                 ./paas-bootstrap/concourse/scripts/file_to_yaml.sh secrets bosh_ca_cert out/bosh-CA.crt > bosh-CA-yml/bosh-ca-cert.yml
-                ./paas-bootstrap/concourse/scripts/file_to_yaml.sh secrets bosh_ca_key out/bosh-CA.crt > bosh-CA-yml/bosh-ca-key.yml
+                ./paas-bootstrap/concourse/scripts/file_to_yaml.sh secrets bosh_ca_key out/bosh-CA.key > bosh-CA-yml/bosh-ca-key.yml
 
       - task: render-bosh-manifest
         config:
