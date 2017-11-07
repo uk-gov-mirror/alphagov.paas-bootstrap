@@ -395,6 +395,7 @@ jobs:
                   tar -xvzf generated-bosh-CA/bosh-CA.tar.gz -C out
                 fi
                 ./paas-bootstrap/concourse/scripts/file_to_yaml.sh secrets bosh_ca_cert out/bosh-CA.crt > generated-bosh-CA/bosh-ca-cert.yml
+                ./paas-bootstrap/concourse/scripts/file_to_yaml.sh secrets bosh_ca_key out/bosh-CA.key > generated-bosh-CA/bosh-ca-key.yml
         on_success:
           put: bosh-CA
           params:
