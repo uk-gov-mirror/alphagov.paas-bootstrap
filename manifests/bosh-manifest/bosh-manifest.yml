@@ -69,6 +69,9 @@ jobs:
             - { name: admin, password: (( grab secrets.bosh_admin_password )) }
             - { name: hm, password: (( grab secrets.bosh_hm_director_password )) }
       trusted_certs: (( grab secrets.bosh_ca_cert ))
+      ssl:
+        key: (( grab secrets.bosh_ca_key ))
+        cert:  (( grab secrets.bosh_ca_cert ))
       events:
         record_events: true
       flush_arp: true
