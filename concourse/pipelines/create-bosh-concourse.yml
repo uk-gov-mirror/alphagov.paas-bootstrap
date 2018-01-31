@@ -263,8 +263,8 @@ jobs:
           image_resource:
             type: docker-image
             source:
-              repository: governmentpaas/curl-ssl
-              tag: 895cf6752c8ec64af05a3a735186b90acd3db65a
+              repository: governmentpaas/awscli
+              tag: b2495d6ed07f680125d19aa7d1701da7efabb289
           inputs:
             - name: paas-bootstrap
           run:
@@ -273,17 +273,30 @@ jobs:
             - -e
             - -c
             - |
-              paas-bootstrap/concourse/scripts/s3init.sh "((state_bucket))" bosh.tfstate paas-bootstrap/concourse/init_files/terraform.tfstate.tpl
-              paas-bootstrap/concourse/scripts/s3init.sh "((state_bucket))" "((bosh_manifest_state))" paas-bootstrap/concourse/init_files/bosh-init-state.json.tpl
-              paas-bootstrap/concourse/scripts/s3init.sh "((state_bucket))" vpc.tfstate paas-bootstrap/concourse/init_files/terraform.tfstate.tpl
-              paas-bootstrap/concourse/scripts/s3init.sh "((state_bucket))" bosh-CA.tar.gz paas-bootstrap/concourse/init_files/empty.tar.gz
-              paas-bootstrap/concourse/scripts/s3init.sh "((state_bucket))" bosh-secrets.yml paas-bootstrap/concourse/init_files/zero_bytes
-              paas-bootstrap/concourse/scripts/s3init.sh "((state_bucket))" bosh_id_rsa paas-bootstrap/concourse/init_files/zero_bytes
-              paas-bootstrap/concourse/scripts/s3init.sh "((state_bucket))" bosh_id_rsa.pub paas-bootstrap/concourse/init_files/zero_bytes
-              paas-bootstrap/concourse/scripts/s3init.sh "((state_bucket))" id_rsa paas-bootstrap/concourse/init_files/zero_bytes
-              paas-bootstrap/concourse/scripts/s3init.sh "((state_bucket))" id_rsa.pub paas-bootstrap/concourse/init_files/zero_bytes
-              paas-bootstrap/concourse/scripts/s3init.sh "((state_bucket))" concourse.tfstate paas-bootstrap/concourse/init_files/terraform.tfstate.tpl
-              paas-bootstrap/concourse/scripts/s3init.sh "((state_bucket))" concourse-secrets.yml paas-bootstrap/concourse/init_files/zero_bytes
+              put_if_not_exists() {
+                source=$1
+                target=$2
+                set +e
+                if aws s3api head-object --bucket "((state_bucket))" --key "$target" 2>&1 | grep -q 'Not Found'; then
+                  set -e
+                  echo "$target does not already exist. Uploading..."
+                  aws s3 cp "$source" "s3://((state_bucket))/$target"
+                else
+                  echo "$target already exists in bucket"
+                fi
+              }
+
+              put_if_not_exists paas-bootstrap/concourse/init_files/terraform.tfstate.tpl bosh.tfstate
+              put_if_not_exists paas-bootstrap/concourse/init_files/bosh-init-state.json.tpl ((bosh_manifest_state))
+              put_if_not_exists paas-bootstrap/concourse/init_files/terraform.tfstate.tpl vpc.tfstate
+              put_if_not_exists paas-bootstrap/concourse/init_files/empty.tar.gz bosh-CA.tar.gz
+              put_if_not_exists paas-bootstrap/concourse/init_files/zero_bytes bosh-secrets.yml
+              put_if_not_exists paas-bootstrap/concourse/init_files/zero_bytes bosh_id_rsa
+              put_if_not_exists paas-bootstrap/concourse/init_files/zero_bytes bosh_id_rsa.pub
+              put_if_not_exists paas-bootstrap/concourse/init_files/zero_bytes id_rsa
+              put_if_not_exists paas-bootstrap/concourse/init_files/zero_bytes id_rsa.pub
+              put_if_not_exists paas-bootstrap/concourse/init_files/terraform.tfstate.tpl concourse.tfstate
+              put_if_not_exists paas-bootstrap/concourse/init_files/zero_bytes concourse-secrets.yml
 
   - name: vpc
     serial: true
@@ -303,8 +316,8 @@ jobs:
           image_resource:
             type: docker-image
             source:
-              repository: governmentpaas/curl-ssl
-              tag: 895cf6752c8ec64af05a3a735186b90acd3db65a
+              repository: governmentpaas/awscli
+              tag: b2495d6ed07f680125d19aa7d1701da7efabb289
           inputs:
           - name: paas-bootstrap
           params:
@@ -317,8 +330,22 @@ jobs:
             - |
               apk add --update openssh
               ssh-keygen -t rsa -b 4096 -f generated_git_id_rsa -N ''
-              ./paas-bootstrap/concourse/scripts/s3init.sh "((state_bucket))" git_id_rsa generated_git_id_rsa
-              ./paas-bootstrap/concourse/scripts/s3init.sh "((state_bucket))" git_id_rsa.pub generated_git_id_rsa.pub
+
+              put_if_not_exists() {
+                source=$1
+                target=$2
+                set +e
+                if aws s3api head-object --bucket "((state_bucket))" --key "$target" 2>&1 | grep -q 'Not Found'; then
+                  set -e
+                  echo "$target does not already exist. Uploading..."
+                  aws s3 cp "$source" "s3://((state_bucket))/$target"
+                else
+                  echo "$target already exists in bucket"
+                fi
+              }
+
+              put_if_not_exists generated_git_id_rsa git_id_rsa
+              put_if_not_exists generated_git_id_rsa.pub git_id_rsa.pub
 
       - task: deploy-vpc
         config:
@@ -971,8 +998,8 @@ jobs:
           image_resource:
             type: docker-image
             source:
-              repository: governmentpaas/curl-ssl
-              tag: 895cf6752c8ec64af05a3a735186b90acd3db65a
+              repository: governmentpaas/awscli
+              tag: b2495d6ed07f680125d19aa7d1701da7efabb289
           inputs:
           - name: paas-bootstrap
           outputs:
@@ -988,8 +1015,22 @@ jobs:
               apk add --update openssh
               cd concourse-ssh-key
               ssh-keygen -t rsa -b 4096 -f generated_concourse_id_rsa -N ''
-              ../paas-bootstrap/concourse/scripts/s3init.sh "((state_bucket))" concourse_id_rsa generated_concourse_id_rsa
-              ../paas-bootstrap/concourse/scripts/s3init.sh "((state_bucket))" concourse_id_rsa.pub generated_concourse_id_rsa.pub
+
+              put_if_not_exists() {
+                source=$1
+                target=$2
+                set +e
+                if aws s3api head-object --bucket "((state_bucket))" --key "$target" 2>&1 | grep -q 'Not Found'; then
+                  set -e
+                  echo "$target does not already exist. Uploading..."
+                  aws s3 cp "$source" "s3://((state_bucket))/$target"
+                else
+                  echo "$target already exists in bucket"
+                fi
+              }
+
+              put_if_not_exists generated_concourse_id_rsa concourse_id_rsa
+              put_if_not_exists generated_concourse_id_rsa.pub concourse_id_rsa.pub
 
       - task: terraform-apply
         config:
