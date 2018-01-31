@@ -25,7 +25,7 @@ fi
 aws_path=/
 content_type='application/x-compressed-tar'
 acl="x-amz-acl:private"
-region=eu-west-1
+region=eu-west-2
 host=${bucket}.s3-${region}.amazonaws.com
 
 sign() {

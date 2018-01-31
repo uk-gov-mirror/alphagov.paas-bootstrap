@@ -9,6 +9,7 @@ cd "$SCRIPT_DIR"
 # Load environment variables
 # shellcheck disable=SC2091
 $("${PROJECT_DIR}/concourse/scripts/environment.sh")
+export AWS_DEFAULT_REGION=eu-west-1
 
 export VAGRANT_DEFAULT_PROVIDER="aws"
 export VAGRANT_BOX_NAME="aws_vagrant_box"
@@ -52,7 +53,9 @@ done
 
 echo
 echo "Succeeded connecting to concourse. About to upload pipelines..."
+export AWS_DEFAULT_REGION=eu-west-2
 "${PROJECT_DIR}/concourse/scripts/pipelines.sh"
+export AWS_DEFAULT_REGION=eu-west-1
 "${PROJECT_DIR}/concourse/scripts/concourse-lite-self-terminate.sh"
 
 echo

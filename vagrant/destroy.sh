@@ -8,6 +8,7 @@ cd "$SCRIPT_DIR"
 # Load environment variables
 # shellcheck disable=SC2091
 $("${SCRIPT_DIR}/../concourse/scripts/environment.sh")
+export AWS_DEFAULT_REGION=eu-west-1
 
 read -r -p "This is a destructive operation, are you sure you want to do this [y/N]? "
 if ! [[ ${REPLY:0:1} == [Yy] ]]; then
