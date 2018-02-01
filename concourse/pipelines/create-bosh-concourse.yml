@@ -1027,6 +1027,7 @@ jobs:
                 else
                   echo "$target already exists in bucket"
                 fi
+                mv $source $target
               }
 
               put_if_not_exists generated_concourse_id_rsa concourse_id_rsa
