@@ -98,7 +98,7 @@ jobs:
     compiled_package_cache:
       options:
         credentials_source: env_or_profile
-        bucket_name: (( concat "gds-paas-bosh-cache-" $AWS_ACCOUNT ))
+        bucket_name: (( concat "gds-paas-bosh-cache-" $AWS_ACCOUNT "-london"))
 
     blobstore:
       provider: s3
