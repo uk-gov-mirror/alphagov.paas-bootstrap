@@ -100,7 +100,7 @@ jobs:
       resurrector_enabled: false
 
     agent:
-      mbus: (( concat "nats://nats:" secrets.bosh_nats_password "@" $BOSH_FQDN ":4222" ))
+      mbus: (( concat "nats://" $BOSH_FQDN ":4222" ))
 
     registry:
       db: (( grab meta.rds ))
