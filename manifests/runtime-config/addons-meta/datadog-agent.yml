@@ -1,9 +1,9 @@
 ---
 releases:
   - name: datadog-agent
-    version: 0.1.4
-    url: https://s3-eu-west-1.amazonaws.com/gds-paas-build-releases/datadog-agent-0.1.4.tgz
-    sha1: a1902a885ef465617eae4f1de184ecaed0d1feb8
+    version: 0.0.1519910652
+    url: https://s3-eu-west-1.amazonaws.com/gds-paas-build-releases/datadog-agent-0.0.1519910652.tgz
+    sha1: 3a6854bd936d9e20205719440e8139f3511d2d9d
 
 meta:
   datadog:
