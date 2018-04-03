@@ -828,14 +828,12 @@ jobs:
               - |
                 if [ "${ENABLE_DATADOG}" = "true" ] ; then
                    BOSH_MANIFEST_STUBS="${BOSH_MANIFEST_STUBS}
-                                        ./paas-bootstrap/manifests/bosh-manifest/addons/datadog-agent.yml
-                                        ./paas-bootstrap/manifests/runtime-config/addons-meta/datadog-agent.yml"
+                                        ./paas-bootstrap/manifests/bosh-manifest/addons/datadog-agent.yml"
                 fi
 
                 if [ "${ENABLE_COLLECTD_ADDON}" = "true" ]; then
                    BOSH_MANIFEST_STUBS="${BOSH_MANIFEST_STUBS}
-                                        ./paas-bootstrap/manifests/bosh-manifest/addons/collectd.yml
-                                        ./paas-bootstrap/manifests/runtime-config/addons-meta/collectd.yml"
+                                        ./paas-bootstrap/manifests/bosh-manifest/addons/collectd.yml"
                 fi
 
                 # shellcheck disable=SC2086
@@ -855,19 +853,8 @@ jobs:
               tag: 895cf6752c8ec64af05a3a735186b90acd3db65a
           inputs:
             - name: paas-bootstrap
-            - name: terraform-outputs
           outputs:
             - name: runtime-config
-          params:
-            AWS_ACCOUNT: ((aws_account))
-            SYSTEM_DNS_ZONE_NAME: ((system_dns_zone_name))
-            MANIFEST_STUBS: |
-              ./paas-bootstrap/manifests/runtime-config/runtime-config-base.yml
-              ./terraform-outputs/*.yml
-            ENABLE_DATADOG: ((enable_datadog))
-            DATADOG_API_KEY: ((datadog_api_key))
-            ENABLE_COLLECTD_ADDON: ((enable_collectd_addon))
-            ENABLE_SYSLOG_ADDON: ((enable_syslog_addon))
           run:
             path: sh
             args:
@@ -876,26 +863,7 @@ jobs:
               - -c
               - |
                 echo "Generating runtime config..."
-
-                if [ "${ENABLE_DATADOG}" = "true" ] ; then
-                   MANIFEST_STUBS="${MANIFEST_STUBS}
-                                  ./paas-bootstrap/manifests/runtime-config/addons/datadog-agent.yml
-                                  ./paas-bootstrap/manifests/runtime-config/addons-meta/datadog-agent.yml"
-                fi
-
-                if [ "${ENABLE_COLLECTD_ADDON}" = "true" ]; then
-                   MANIFEST_STUBS="${MANIFEST_STUBS}
-                                  ./paas-bootstrap/manifests/runtime-config/addons/collectd.yml
-                                  ./paas-bootstrap/manifests/runtime-config/addons-meta/collectd.yml"
-                fi
-
-                if [ "${ENABLE_SYSLOG_ADDON}" = "true" ]; then
-                   MANIFEST_STUBS="${MANIFEST_STUBS}
-                                  ./paas-bootstrap/manifests/runtime-config/addons/syslog-forwarder.yml"
-                fi
-
-                # shellcheck disable=SC2086
-                ./paas-bootstrap/manifests/shared/build_manifest.sh $MANIFEST_STUBS > runtime-config/runtime-config.yml
+                cp ./paas-bootstrap/manifests/runtime-config/runtime-config-base.yml runtime-config/runtime-config.yml
         on_success:
           put: runtime-config
           params:
