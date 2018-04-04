@@ -109,6 +109,9 @@ jobs:
               name: atc
               password: (( grab secrets.concourse_postgres_password ))
           token_signing_key: (( grab secrets.concourse_token_signing_key ))
+          prometheus:
+            bind_ip: 0.0.0.0
+            bind_port: 9391
 
       - name: groundcrew
         release: concourse
