@@ -217,31 +217,6 @@ jobs:
         - get: concourse-tfstate
         - get: bosh-CA-crt
 
-      - task: destroy-concourse
-        config:
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: governmentpaas/bosh-cli-v2
-              tag: 0eff5b6a9c092f865a2b19cc4e75a3b539b82fa2
-          inputs:
-          - name: paas-bootstrap
-          - name: bosh-secrets
-          - name: bosh-CA-crt
-          params:
-            BOSH_ENVIRONMENT: ((bosh_login_host))
-            BOSH_CA_CERT: bosh-CA-crt/bosh-CA.crt
-            BOSH_DEPLOYMENT: concourse
-          run:
-            path: sh
-            args:
-            - -e
-            - -c
-            - |
-              ./paas-bootstrap/concourse/scripts/bosh_login.sh bosh-secrets/bosh-secrets.yml
-              bosh -n delete-deployment --force
-
       - task: vpc-terraform-outputs-to-sh
         config:
           platform: linux
