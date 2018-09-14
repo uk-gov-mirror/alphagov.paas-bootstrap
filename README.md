@@ -21,6 +21,8 @@ or destroyed.
 
 In order to use this repository you will need:
 
+* Initialised git submodules
+
 * Predefined [IAM instance profiles](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html) that will be assigned to Concourse-lite, BOSH and Concourse. See below for details.
 
 * [AWS Command Line tool (`awscli`)](https://aws.amazon.com/cli/). You can

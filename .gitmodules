@@ -1,0 +1,3 @@
+[submodule "manifests/concourse-bosh-deployment"]
+	path = manifests/concourse-bosh-deployment
+	url = https://github.com/concourse/concourse-bosh-deployment/
