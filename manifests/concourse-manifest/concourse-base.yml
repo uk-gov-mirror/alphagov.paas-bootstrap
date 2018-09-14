@@ -10,17 +10,17 @@ name: concourse
 
 releases:
   - name: concourse
-    version: 3.8.0
-    url: https://bosh.io/d/github.com/concourse/concourse?v=3.8.0
-    sha1: 99e134676df72e18c719ccfbd7977bd9449e6fd4
+    version: 4.1.0
+    url: https://bosh.io/d/github.com/concourse/concourse?v=4.1.0
+    sha1: 513e3a88d135e6e2cd8a974702e2e63caa0cb82b
   - name: garden-runc
-    version: 1.6.0
-    url: https://bosh.io/d/github.com/cloudfoundry/garden-runc-release?v=1.6.0
-    sha1: 58fbc64aff303e6d76899441241dd5dacef50cb7
+    version: 1.16.3
+    url: https://bosh.io/d/github.com/cloudfoundry/garden-runc-release?v=1.16.3
+    sha1: 2a7c813e7e4d862e19334addf022916fb6b91eb0
   - name: postgres
-    version: 22
-    url: https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=22
-    sha1: 86a1333122e9cdd051551c83ec26d36f6e325d6c
+    version: 30
+    url: https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=30
+    sha1: a798999d29b9f5aa12035cff907b26674b491200
 
 properties:
   aws:
