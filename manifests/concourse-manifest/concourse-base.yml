@@ -110,6 +110,17 @@ instance_groups:
               password: (( grab secrets.concourse_postgres_password ))
           token_signing_key: (( grab secrets.concourse_token_signing_key ))
 
+      - name: worker
+        release: concourse
+        properties:
+          baggageclaim:
+            url: "http://127.0.0.1:7788"
+          tsa:
+            host: 127.0.0.1
+            port: 2222
+            host_public_key: (( grab secrets.concourse_tsa_host_key.public_key ))
+            worker_key: (( grab secrets.concourse_worker_key ))
+
       - name: tsa
         release: concourse
         properties:
