@@ -3,7 +3,7 @@
 set -eu
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-
+exit 0
 # shellcheck disable=SC1090
 . "${SCRIPT_DIR}/common_cert_management.sh"
 
