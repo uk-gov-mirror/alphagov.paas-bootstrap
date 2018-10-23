@@ -727,6 +727,7 @@ jobs:
         - get: vpc-tfstate
           passed: ['vpc']
         - get: bosh-tfstate
+        - get: postgres-tfstate
         - get: bosh-ssh-public-key
           passed: ['generate-secrets']
         - get: ssh-public-key
