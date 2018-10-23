@@ -11,6 +11,7 @@ resource "aws_db_subnet_group" "bosh_rds" {
 resource "aws_security_group" "bosh_rds_client" {
   name        = "${var.env}-bosh-rds-client"
   description = "Clients to the Bosh RDS instance"
+  vpc_id      = "${var.vpc_id}"
 
   tags {
     Name = "${var.env}-bosh-rds-client"
