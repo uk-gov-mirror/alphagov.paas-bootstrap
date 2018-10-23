@@ -18,6 +18,10 @@ output "bosh_security_group" {
   value = "${aws_security_group.bosh.name}"
 }
 
+output "bosh_rds_client_security_group" {
+  value = "${aws_security_group.bosh_rds_client.name}"
+}
+
 output "bosh_managed_security_group" {
   value = "${aws_security_group.bosh_managed.name}"
 }

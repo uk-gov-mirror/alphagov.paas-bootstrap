@@ -8,6 +8,15 @@ resource "aws_db_subnet_group" "bosh_rds" {
   }
 }
 
+resource "aws_security_group" "bosh_rds_client" {
+  name        = "${var.env}-bosh-rds-client"
+  description = "Clients to the Bosh RDS instance"
+
+  tags {
+    Name = "${var.env}-bosh-rds-client"
+  }
+}
+
 resource "aws_security_group" "bosh_rds" {
   name        = "${var.env}-bosh-rds"
   description = "BOSH RDS security group"
@@ -19,7 +28,7 @@ resource "aws_security_group" "bosh_rds" {
     protocol  = "tcp"
 
     security_groups = [
-      "${aws_security_group.bosh.id}",
+      "${aws_security_group.bosh_rds_client.id}",
     ]
   }
 
