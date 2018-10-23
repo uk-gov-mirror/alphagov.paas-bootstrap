@@ -172,6 +172,28 @@ resources:
             ]
         }
 
+  - name: postgres-tfstate
+    type: s3-iam
+    source:
+      bucket: ((state_bucket))
+      region_name: ((aws_region))
+      versioned_file: postgres.tfstate
+      initial_version: "-"
+      initial_content_text: |
+        {
+            "version": 1,
+            "serial": 0,
+            "modules": [
+                {
+                    "path": [
+                        "root"
+                    ],
+                    "outputs": {},
+                    "resources": {}
+                }
+            ]
+        }
+
   - name: bosh-manifest
     type: s3-iam
     source:
@@ -786,6 +808,63 @@ jobs:
           put: bosh-tfstate
           params:
             file: updated-bosh-tfstate/bosh.tfstate
+
+      - task: extract-bosh-variables
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: ruby
+              tag: 2.5-slim
+          inputs:
+            - name: paas-bootstrap
+            - name: updated-bosh-tfstate
+          outputs:
+            - name: bosh-tfvars
+          run:
+            path: sh
+            args:
+              - -e
+              - -c
+              - |
+                ruby paas-bootstrap/concourse/scripts/extract_tf_vars_from_terraform_state.rb \
+                < updated-bosh-tfstate/bosh.tfstate > bosh-tfvars/bosh.tfvars.sh
+
+      - task: postgres-apply
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: governmentpaas/terraform
+              tag: 9cad30b5d5889a0b72173f39701d1620e24df82c
+          inputs:
+            - name: paas-bootstrap
+            - name: postgres-tfstate
+            - name: terraform-variables
+            - name: bosh-tfvars
+          outputs:
+            - name: updated-postgres-tfstate
+          run:
+            path: sh
+            args:
+              - -e
+              - -c
+              - |
+                . terraform-variables/bosh-secrets.tfvars.sh
+                . bosh-tfvars/bosh.tfvars.sh
+
+                cp postgres-tfstate/postgres.tfstate updated-postgres-tfstate/postgres.tfstate
+                terraform init paas-bootstrap/terraform/postgres
+                terraform apply \
+                  -auto-approve=true \
+                  -state=updated-postgres-tfstate/postgres.tfstate \
+                  paas-bootstrap/terraform/postgres
+        ensure:
+          put: postgres-tfstate
+          params:
+            file: updated-postgres-tfstate/postgres.tfstate
 
   - name: generate-bosh-config
     serial_groups: [bosh-deploy]
