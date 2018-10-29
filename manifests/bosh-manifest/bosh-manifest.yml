@@ -286,7 +286,8 @@ instance_groups:
         username: credhub
         password: (( grab secrets.bosh_credhub_postgres_password ))
         database: credhub
-        require_tls: false
+        require_tls: true
+        tls_ca: (( grab meta.aws_rds_combined_ca_bundle ))
       tls:
         certificate: (( grab secrets.bosh_credhub_cert ))
         private_key: (( grab secrets.bosh_credhub_key ))
