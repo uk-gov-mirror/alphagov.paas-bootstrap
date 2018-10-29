@@ -142,9 +142,17 @@ instance_groups:
         extensions:
         - citext
         - pgcrypto
+      - name: credhub
+        owner: credhub
+        extensions:
+        - citext
+        - pgcrypto
       roles:
       - name: uaa
         password: (( grab secrets.bosh_uaa_postgres_password ))
+        parent_role: (( grab terraform_outputs.bosh_db_username ))
+      - name: credhub
+        password: (( grab secrets.bosh_credhub_postgres_password ))
         parent_role: (( grab terraform_outputs.bosh_db_username ))
     nats:
       address: 127.0.0.1
