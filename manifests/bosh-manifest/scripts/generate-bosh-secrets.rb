@@ -18,6 +18,9 @@ generator = SecretGenerator.new(
   "bosh_uaa_login_client_password" => :simple,
   "bosh_uaa_uaa_encryption_key_1" => :simple,
   "bosh_uaa_jwt_signing_key" => :bosh_rsa_key,
+  "bosh_credhub_encryption_password" => :simple,
+  "bosh_uaa_clients_director_to_credhub_password" => :simple,
+  "bosh_credhub_admin_client_password" => :simple,
 )
 
 option_parser = OptionParser.new do |opts|

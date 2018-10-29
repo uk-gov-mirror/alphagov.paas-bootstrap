@@ -19,6 +19,7 @@ default.hm.bosh-internal,
 bosh_director,bosh.${SYSTEM_DNS_ZONE_NAME},bosh-external.${SYSTEM_DNS_ZONE_NAME}
 bosh_uaa,bosh.${SYSTEM_DNS_ZONE_NAME}
 bosh_uaa_service_provider_ssl,bosh.${SYSTEM_DNS_ZONE_NAME}
+bosh_credhub,bosh.${SYSTEM_DNS_ZONE_NAME}
 "
 
 generate_cert() {
