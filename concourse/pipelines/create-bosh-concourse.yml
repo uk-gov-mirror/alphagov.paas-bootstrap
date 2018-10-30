@@ -1167,6 +1167,8 @@ jobs:
         - get: concourse-secrets
         - get: bosh-tfstate
           passed: ['concourse-terraform']
+        - get: bosh-secrets
+          passed: ['generate-bosh-config']
       - task: terraform-outputs-to-yaml
         config:
           platform: linux
@@ -1220,6 +1222,7 @@ jobs:
             CONCOURSE_MANIFEST_STUBS: |
               ./paas-bootstrap/manifests/concourse-manifest/concourse-base.yml
               concourse-secrets/concourse-secrets.yml
+              bosh-secrets/bosh-secrets.yml
               terraform-outputs/concourse-terraform-outputs.yml
               terraform-outputs/vpc-terraform-outputs.yml
               terraform-outputs/bosh-terraform-outputs.yml
@@ -1233,6 +1236,7 @@ jobs:
           - name: paas-bootstrap
           - name: concourse-secrets
           - name: terraform-outputs
+          - name: bosh-secrets
           outputs:
           - name: concourse-manifest
           run:
