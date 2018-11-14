@@ -1,0 +1,15 @@
+releases:
+  - name: node-exporter
+    url: https://github.com/bosh-prometheus/node-exporter-boshrelease/releases/download/v4.0.1/node-exporter-4.0.1.tgz
+    sha1: 8f00d257838f33d5022d6c356c35d2922e75c9b4
+    version: 4.0.1
+
+instance_groups:
+  - name: node_exporter
+    jobs:
+    - name: node_exporter
+      release: node-exporter
+    include:
+      stemcell:
+      - os: ubuntu-trusty
+    properties: {}
