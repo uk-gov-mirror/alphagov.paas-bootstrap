@@ -81,7 +81,6 @@ dev: globals check-env-vars ## Set Environment to DEV
 	$(eval export AWS_ACCOUNT=dev)
 	$(eval export MAKEFILE_ENV_TARGET=dev)
 	$(eval export ENABLE_DESTROY=true)
-	$(eval export ENABLE_DATADOG ?= false)
 	$(eval export ENABLE_GITHUB ?= false)
 	$(eval export CONCOURSE_AUTH_DURATION=48h)
 	$(eval export SKIP_COMMIT_VERIFICATION=true)
@@ -93,7 +92,6 @@ ci: globals check-env-vars ## Set Environment to CI
 	$(eval export SYSTEM_DNS_ZONE_ID=Z2PF4LCV9VR1MV)
 	$(eval export AWS_ACCOUNT=ci)
 	$(eval export MAKEFILE_ENV_TARGET=ci)
-	$(eval export ENABLE_DATADOG=true)
 	$(eval export ENABLE_GITHUB=true)
 	$(eval export AWS_DEFAULT_REGION ?= eu-west-1)
 
@@ -106,7 +104,6 @@ stg-lon: globals ## Set Environment to stg-lon
 	$(eval export APPS_DNS_ZONE_ID=Z32JRRSU1CAFE8)
 	$(eval export AWS_ACCOUNT=staging)
 	$(eval export MAKEFILE_ENV_TARGET=stg-lon)
-	$(eval export ENABLE_DATADOG=true)
 	$(eval export ENABLE_GITHUB=true)
 	$(eval export AWS_DEFAULT_REGION=eu-west-2)
 
@@ -119,7 +116,6 @@ prod: globals ## Set Environment to Prod
 	$(eval export APPS_DNS_ZONE_ID=Z29K8LQNCFDZ1T)
 	$(eval export AWS_ACCOUNT=prod)
 	$(eval export MAKEFILE_ENV_TARGET=prod)
-	$(eval export ENABLE_DATADOG=true)
 	$(eval export ENABLE_GITHUB=true)
 	$(eval export AWS_DEFAULT_REGION=eu-west-1)
 
@@ -132,7 +128,6 @@ prod-lon: globals ## Set Environment to prod-lon
 	$(eval export APPS_DNS_ZONE_ID=Z29K8LQNCFDZ1T)
 	$(eval export AWS_ACCOUNT=prod)
 	$(eval export MAKEFILE_ENV_TARGET=prod-lon)
-	$(eval export ENABLE_DATADOG=true)
 	$(eval export ENABLE_GITHUB=true)
 	$(eval export AWS_DEFAULT_REGION=eu-west-2)
 
