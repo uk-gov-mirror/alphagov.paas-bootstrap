@@ -20,6 +20,7 @@ export BOSH_CLIENT_SECRET
 docker run \
     -it \
     --rm \
+    --network host \
     --env "BOSH_ID_RSA" \
     --env "BOSH_IP" \
     --env "BOSH_CLIENT=admin" \

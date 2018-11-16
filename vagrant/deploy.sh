@@ -34,7 +34,7 @@ echo "Setting up SSH tunnel to concourse..."
 if ! ( [ -a .vagrant/tunnel-ctrl-socket ] && \
   vagrant ssh -- -S .vagrant/tunnel-ctrl-socket -O check ); then
   vagrant ssh -- -L 8080:127.0.0.1:8080 -fN \
-    -M -S .vagrant/tunnel-ctrl-socket -o "ExitOnForwardFailure yes"
+    -M -S .vagrant/tunnel-ctrl-socket
 fi
 
 timeout=180
