@@ -1,0 +1,9 @@
+---
+
+- type: replace
+  path: /releases/name=bosh-aws-cpi
+  value:
+    name: bosh-aws-cpi
+    version: 0.0.1548775736
+    url: https://s3-eu-west-1.amazonaws.com/gds-paas-build-releases/bosh-aws-cpi-0.0.1548775736.tgz
+    sha1: 160a023753fa8393dd6f7ffa3afed7c6bd970eaf
