@@ -79,9 +79,7 @@ dev: globals check-env-vars ## Set Environment to DEV
 	$(eval export APPS_DNS_ZONE_ID=Z3R6XFWUT4YZHB)
 	$(eval export AWS_ACCOUNT=dev)
 	$(eval export MAKEFILE_ENV_TARGET=dev)
-	$(eval export ENABLE_DESTROY=true)
 	$(eval export ENABLE_GITHUB ?= false)
-	$(eval export CONCOURSE_AUTH_DURATION=48h)
 	$(eval export SKIP_COMMIT_VERIFICATION=true)
 	$(eval export AWS_DEFAULT_REGION ?= eu-west-1)
 
