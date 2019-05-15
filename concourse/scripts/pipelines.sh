@@ -21,7 +21,7 @@ concourse_hostname: ${CONCOURSE_HOSTNAME}
 concourse_url: ${CONCOURSE_URL}
 system_dns_zone_name: ${SYSTEM_DNS_ZONE_NAME}
 system_dns_zone_id: ${SYSTEM_DNS_ZONE_ID}
-bosh_az: ${BOSH_AZ:-${AWS_DEFAULT_REGION}a}
+bosh_az: ${BOSH_AZ:-${AWS_DEFAULT_REGION}b}
 bosh_manifest_state: bosh-manifest-state-${BOSH_AZ:-${AWS_DEFAULT_REGION}a}.json
 bosh_fqdn: ${BOSH_FQDN}
 bosh_fqdn_external: ${BOSH_FQDN_EXTERNAL}
