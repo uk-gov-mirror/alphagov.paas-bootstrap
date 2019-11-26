@@ -7,4 +7,18 @@
 
 - type: replace
   path: /instance_groups/name=bosh/jobs/name=uaa/properties/uaa/scim/users
-  value: []
+  value:
+  - email: mohamed.deerow@digital.cabinet-office.gov.uk
+    firstName: Mohamed
+    groups:
+    - bosh.admin
+    lastName: Deerow
+    name: mohameddeerow
+    origin: uaa
+    password: ((mo_password))
+
+- type: replace
+  path: /variables/-
+  value:
+    name: mo_password
+    type: password
