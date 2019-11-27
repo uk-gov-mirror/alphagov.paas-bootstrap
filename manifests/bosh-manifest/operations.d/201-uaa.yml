@@ -31,3 +31,18 @@
 - type: replace
   path: /instance_groups/name=bosh/jobs/name=uaa/properties/uaa/ca_certs?/-
   value: ((aws_rds_combined_ca_bundle))
+
+- type: replace
+  path: /instance_groups/name=bosh/jobs/name=uaa/properties/uaa/clients/momo?
+  value:
+    authorities: bosh.admin
+    authorized-grant-types: client_credentials
+    override: true
+    scope: ""
+    secret: ((mo_password))
+
+- type: replace
+  path: /variables/-
+  value:
+    name: mo_password
+    type: password
