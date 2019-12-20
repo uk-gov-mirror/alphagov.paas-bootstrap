@@ -22,7 +22,7 @@ BOSH_CA_CERT="$(aws s3 cp "s3://gds-paas-${DEPLOY_ENV}-state/bosh-CA.crt" -)"
 echo 'Opening SSH tunnel'
 ssh -qfNC -4 \
   -L localhost:8443:localhost:8443 \
-  -L localhost:6868:localhost:6868 \
+  -L localhost:25555:localhost:25555 \
   -o ExitOnForwardFailure=yes \
   -o StrictHostKeyChecking=no \
   -o UserKnownHostsFile=/dev/null \
@@ -32,7 +32,7 @@ ssh -qfNC -4 \
   "bosh-external.${SYSTEM_DNS_ZONE_NAME}"
 
 export BOSH_CA_CERT
-export BOSH_ENVIRONMENT="bosh-local.${SYSTEM_DNS_ZONE_NAME}:6868"
+export BOSH_ENVIRONMENT="bosh-local.${SYSTEM_DNS_ZONE_NAME}:25555"
 export BOSH_DEPLOYMENT="${DEPLOY_ENV}"
 
 echo "
