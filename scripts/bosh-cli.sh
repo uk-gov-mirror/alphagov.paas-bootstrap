@@ -32,7 +32,7 @@ ssh -qfNC -4 \
   "bosh-external.${SYSTEM_DNS_ZONE_NAME}"
 
 export BOSH_CA_CERT
-export BOSH_ENVIRONMENT="localhost:6868"
+export BOSH_ENVIRONMENT="bosh-local.${SYSTEM_DNS_ZONE_NAME}:6868"
 export BOSH_DEPLOYMENT="${DEPLOY_ENV}"
 
 echo "

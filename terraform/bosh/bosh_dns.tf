@@ -22,7 +22,6 @@ resource "aws_route53_record" "bosh-uaa-local" {
   records = ["127.0.0.1"]
 }
 
-
 resource "aws_route53_record" "bosh-external" {
   zone_id = "${var.system_dns_zone_id}"
   name    = "${var.bosh_fqdn_external}"
