@@ -1,6 +1,6 @@
 - type: replace
   path: /instance_groups/name=bosh/properties/director/user_management/uaa?/url
-  value: "https://bosh-uaa-local.((system_domain)):8443"
+  value: "https://((bosh_fqdn)):8443"
 
 - type: replace
   path: /instance_groups/name=bosh/jobs/name=uaa/properties/uaa/url

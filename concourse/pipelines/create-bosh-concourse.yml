@@ -970,8 +970,6 @@ jobs:
                 cp bosh-manifest/bosh-manifest.yml bosh-init-working-dir/bosh-manifest.yml
                 cp bosh-init-state/"${BOSH_MANIFEST_STATE}" bosh-init-working-dir/bosh-manifest-state.json
                 bosh -n create-env bosh-init-working-dir/bosh-manifest.yml \
-                  --recreate \
-                  --recreate-persistent-disks \
                   --state=bosh-init-working-dir/bosh-manifest-state.json
         ensure:
           put: bosh-init-state
