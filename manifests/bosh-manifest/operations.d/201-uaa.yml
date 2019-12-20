@@ -26,7 +26,7 @@
 
 - type: replace
   path: /variables/name=uaa_ssl/options/alternative_names/-
-  value: localhost
+  value: bosh-uaa-local.((system_domain))
 
 - type: replace
   path: /variables/name=uaa_service_provider_ssl/options/alternative_names/-
@@ -35,6 +35,10 @@
 - type: replace
   path: /instance_groups/name=bosh/jobs/name=uaa/properties/uaa/ca_certs?/-
   value: ((aws_rds_combined_ca_bundle))
+
+- type: replace
+  path: /instance_groups/name=bosh/jobs/name=uaa/properties/uaa/zones?/internal?/hostnames?/-
+  value: bosh-uaa-local.((system_domain))
 
 - type: replace
   path: /instance_groups/name=bosh/jobs/name=uaa/properties/login/oauth?/providers/google
