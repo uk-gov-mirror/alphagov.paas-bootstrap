@@ -10,8 +10,3 @@
 - type: replace
   path: /variables/name=director_ssl/options/alternative_names/-
   value: bosh-local.((system_domain))
-
-- type: replace
-  path: /variables/name=director_ssl/options/alternative_names/-
-  value: localhost
-
