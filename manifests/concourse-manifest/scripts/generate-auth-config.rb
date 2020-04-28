@@ -14,7 +14,7 @@ if !File.exists? paas_trusted_people_path
   exit 1
 end
 
-trusted_people = YAML.safe_load(File.read(paas_trusted_people_path), aliases: true)
+trusted_people = YAML.safe_load(File.read(paas_trusted_people_path), [], [], true)
 users = trusted_people.fetch("users")
 
 # Find users for this aws account with concourse access
