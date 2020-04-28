@@ -1310,9 +1310,9 @@ jobs:
               - -e
               - -c
               - |
-                ruby ./paas-bootstrap/manifests/concourse-manifest/scripts/generate-auth-config.sh \
+                ruby ./paas-bootstrap/manifests/concourse-manifest/scripts/generate-auth-config.rb \
                   > concourse-manifest/concourse-auth-config.yml
-                
+
                 ls -l concourse-manifest/concourse-auth-config.yml
 
       - task: generate-concourse-manifest
