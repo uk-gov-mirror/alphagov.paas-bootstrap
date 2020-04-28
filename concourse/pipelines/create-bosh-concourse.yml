@@ -1288,6 +1288,33 @@ jobs:
           params:
             file: paas-bootstrap-cloud-config/paas-bootstrap-cloud-config.yml
 
+      - task: generate-concourse-auth-config
+        config:
+          platform: linux
+          image_resource: *ruby-slim-image-resource
+          params:
+            AWS_ACCOUNT: ((aws_account))
+            ENABLE_GITHUB: ((enable_github))
+            ENABLE_GOOGLE: yes
+            GITHUB_CLIENT_ID: ((github_client_id))
+            GITHUB_CLIENT_SECRET: ((github_client_secret))
+            SYSTEM_DNS_ZONE_NAME: ((system_dns_zone_name))
+          inputs:
+            - name: paas-bootstrap
+            - name: paas-trusted-people
+          outputs:
+            - name: concourse-manifest
+          run:
+            path: sh
+            args:
+              - -e
+              - -c
+              - |
+                ruby ./paas-bootstrap/manifests/concourse-manifest/scripts/generate-auth-config.sh \
+                  > concourse-manifest/concourse-auth-config.yml
+                
+                ls -l concourse-manifest/concourse-auth-config.yml
+
       - task: generate-concourse-manifest
         config:
           platform: linux
