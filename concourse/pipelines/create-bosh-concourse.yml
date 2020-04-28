@@ -1299,6 +1299,7 @@ jobs:
             CONCOURSE_INSTANCE_TYPE: ((concourse_instance_type))
             CONCOURSE_INSTANCE_PROFILE: ((concourse_instance_profile))
             ENABLE_GITHUB: ((enable_github))
+            ENABLE_GOOGLE: yes
             GITHUB_CLIENT_ID: ((github_client_id))
             GITHUB_CLIENT_SECRET: ((github_client_secret))
             SYSTEM_DNS_ZONE_NAME: ((system_dns_zone_name))
