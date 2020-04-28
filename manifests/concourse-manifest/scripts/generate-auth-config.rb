@@ -54,7 +54,7 @@ if enable_github
       Cannot enable GitHub access to Concourse.
       One or more users with the '#{CONCOURSE_ACCESS_ROLE}' role in '#{aws_account}' do not have 'github_username' set
       #{
-        without_github_username.map{|u| u.email}.inspect
+        without_github_username.map{|u| u["email"]}.inspect
       }
     }
 
