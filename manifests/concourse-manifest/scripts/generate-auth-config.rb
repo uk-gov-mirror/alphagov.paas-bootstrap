@@ -48,11 +48,14 @@ config = {
 
 if enable_github
   puts "Enabling GitHub access"
-  some_without_github_username = concourse_users.any? {|u| u["github_username"] == nil}
-  if some_without_github_username
+  without_github_username = concourse_users.select {|u| u["github_username"] == nil}
+  if without_github_username.any?
     STDERR.puts %{
       Cannot enable GitHub access to Concourse.
       One or more users with the '#{CONCOURSE_ACCESS_ROLE}' role in '#{aws_account}' do not have 'github_username' set
+      #{
+        without_github_username.map{|u| u.email}.inspect
+      }
     }
 
     exit 1
