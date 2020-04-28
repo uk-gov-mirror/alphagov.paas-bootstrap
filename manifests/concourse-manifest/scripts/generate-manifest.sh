@@ -5,13 +5,8 @@ set -eu
 PAAS_BOOTSTRAP_DIR=${PAAS_BOOTSTRAP_DIR:-paas-bootstrap}
 WORKDIR=${WORKDIR:-.}
 
-github_auth_files=""
-if [ "${ENABLE_GITHUB}" = "true" ] ; then
-  github_auth_files="${github_auth_files} ${PAAS_BOOTSTRAP_DIR}/manifests/concourse-manifest/github_auth/config.yml"
-  if [ "${AWS_ACCOUNT}" = "dev" ] || [ "${AWS_ACCOUNT}" = "ci" ]; then
-    github_auth_files="${github_auth_files} ${PAAS_BOOTSTRAP_DIR}/manifests/concourse-manifest/github_auth/dev_ci_additional_users.yml"
-  fi
-fi
+ruby "${PAAS_BOOTSTRAP_DIR}/manifest/concourse-manifest/scripts/generate-auth-config.rb" "paas-trusted-people/users.yml" \
+  > "${WORKDIR}/concourse-auth-config.yml"
 
 # shellcheck disable=SC2086
 spruce merge \
@@ -24,4 +19,4 @@ spruce merge \
   "${WORKDIR}/terraform-outputs/concourse-terraform-outputs.yml" \
   "${WORKDIR}/terraform-outputs/vpc-terraform-outputs.yml" \
   "${WORKDIR}/terraform-outputs/bosh-terraform-outputs.yml" \
-  ${github_auth_files}
+  "${WORKDIR}/concourse-auth-config.yml"

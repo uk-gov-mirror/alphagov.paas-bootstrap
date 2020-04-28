@@ -1188,6 +1188,7 @@ jobs:
           passed: ['generate-bosh-config']
         - get: bosh-tfstate
           passed: ['concourse-terraform']
+        - get: paas-trusted-people
       - task: terraform-outputs-to-yaml
         config:
           platform: linux
@@ -1305,6 +1306,7 @@ jobs:
           - name: paas-bootstrap
           - name: bosh-secrets
           - name: terraform-outputs
+          - name: paas-trusted-people
           outputs:
           - name: concourse-manifest
           run:
