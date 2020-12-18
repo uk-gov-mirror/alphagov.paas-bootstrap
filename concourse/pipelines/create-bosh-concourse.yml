@@ -525,6 +525,7 @@ jobs:
             - -e
             - |
               [ -f bucket-state/bucket.tfstate ] && cp bucket-state/bucket.tfstate updated-bucket-state/bucket.tfstate
+              sh paas-bootstrap/terraform/./update-terraform-providers.sh updated-bucket-state/bucket.tfstate
               terraform init paas-bootstrap/terraform/bucket
 
               terraform apply \
@@ -611,6 +612,7 @@ jobs:
             - |
               CONCOURSE_EGRESS_IP=$(wget -q -O - http://169.254.169.254/latest/meta-data/public-ipv4)
               cp vpc-tfstate/vpc.tfstate updated-vpc-tfstate/vpc.tfstate
+              sh paas-bootstrap/terraform/./update-terraform-providers.sh updated-vpc-tfstate/vpc.tfstate
               terraform init paas-bootstrap/terraform/vpc
 
               terraform apply \
@@ -662,6 +664,7 @@ jobs:
               - |
                 cp bootstrap-cyber-tfstate/bootstrap-cyber.tfstate \
                    updated-bootstrap-cyber-tfstate/bootstrap-cyber.tfstate
+                sh paas-bootstrap/terraform/./update-terraform-providers.sh updated-bootstrap-cyber-tfstate/bootstrap-cyber.tfstate
 
                 terraform init paas-bootstrap/terraform/cyber
 
@@ -867,6 +870,7 @@ jobs:
                 CONCOURSE_EGRESS_IP=$(wget -q -O - http://169.254.169.254/latest/meta-data/public-ipv4)
 
                 cp bosh-tfstate/bosh.tfstate updated-bosh-tfstate/bosh.tfstate
+                sh paas-bootstrap/terraform/./update-terraform-providers.sh updated-bosh-tfstate/bosh.tfstate
                 terraform init paas-bootstrap/terraform/bosh
 
                 terraform apply \
@@ -1193,6 +1197,7 @@ jobs:
               CONCOURSE_EGRESS_IP=$(wget -q -O - http://169.254.169.254/latest/meta-data/public-ipv4)
 
               cp concourse-tfstate/concourse.tfstate updated-concourse-tfstate/concourse.tfstate
+              sh paas-bootstrap/terraform/./update-terraform-providers.sh updated-concourse-tfstate/concourse.tfstate
               terraform init paas-bootstrap/terraform/concourse
 
               terraform apply \
@@ -1962,6 +1967,7 @@ jobs:
             - -c
             - |
               cp vpc-tfstate/vpc.tfstate updated-vpc-tfstate/vpc.tfstate
+              sh paas-bootstrap/terraform/./update-terraform-providers.sh updated-vpc-tfstate/vpc.tfstate
               terraform init paas-bootstrap/terraform/vpc
 
               terraform apply \
@@ -2006,6 +2012,7 @@ jobs:
               export TF_VAR_bosh_az=""
 
               cp bosh-tfstate/bosh.tfstate updated-bosh-tfstate/bosh.tfstate
+              sh paas-bootstrap/terraform/./update-terraform-providers.sh updated-bosh-tfstate/bosh.tfstate
               terraform init paas-bootstrap/terraform/bosh
 
               terraform apply \
@@ -2049,6 +2056,7 @@ jobs:
               . bosh-terraform-outputs/tfvars.sh
 
               cp concourse-tfstate/concourse.tfstate updated-concourse-tfstate/concourse.tfstate
+              sh paas-bootstrap/terraform/./update-terraform-providers.sh updated-concourse-tfstate/concourse.tfstate
               terraform init paas-bootstrap/terraform/concourse
 
               terraform apply \
